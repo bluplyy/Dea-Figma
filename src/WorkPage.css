@@ -1,0 +1,55 @@
+/* ===== WORK PAGE STYLES ===== */
+
+/* Card wrapper — hide default cursor on hover */
+.work-card {
+  cursor: none;
+  position: relative;
+  /* Proportional height based on viewport height, leaving space for navbar & label */
+  height: min(666px, calc(100dvh - 160px));
+  aspect-ratio: 537 / 666;
+  max-width: 90vw;
+}
+
+/* Custom "LOOK" cursor badge — follows the mouse position */
+.work-card-cursor {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 16px;
+  min-width: 77px;
+  height: 34px;
+  /* Inverted rectangle: white box with mix-blend-mode difference */
+  background-color: #ffffff;
+  mix-blend-mode: difference;
+  transition: none;
+}
+
+/* The "LOOK" text inside the cursor badge */
+.work-card-cursor-text {
+  font-family: 'NATS', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #000000;
+  user-select: none;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Name text below each photo */
+.work-card-name {
+  font-family: 'NATS', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1A1A1A;
+  margin-top: 10px;
+  user-select: none;
+  display: block;
+}
