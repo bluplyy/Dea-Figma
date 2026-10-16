@@ -235,8 +235,8 @@ function WorkDetailPage() {
 
       {/* ===== TAMPILAN MOBILE (< 800PX): TEKS DI ATAS, GAMBAR DI BAWAH ===== */}
       <div className="min-[800px]:hidden w-full flex flex-col pt-[100px]">
-        {/* Teks di atas: px-5, font NATS 16px, letter-spacing -2%, line-height 85% */}
-        <div className="w-full px-5 mb-10">
+        {/* Teks di atas: px-5, pb-[50px], font NATS 16px, letter-spacing -2%, line-height 85% */}
+        <div className="w-full px-5 pb-[50px]">
           <h1
             className="font-nats uppercase text-[#1A1A1A] mb-8 text-left"
             style={{
