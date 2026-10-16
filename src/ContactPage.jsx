@@ -137,8 +137,8 @@ function ContactPage() {
 
       {/* ===== TAMPILAN DESKTOP (>= 800PX): SPLIT 50% LEFT / 50% RIGHT (NO SCROLL) ===== */}
       <div className="hidden min-[800px]:flex w-full h-full overflow-hidden flex-row">
-        {/* SISI KIRI: TEKS INFORMASI CONTACT */}
-        <div className="w-1/2 h-full flex flex-col justify-center px-8 sm:px-12 md:px-16 xl:px-20 2xl:px-24">
+        {/* SISI KIRI: TEKS INFORMASI CONTACT (DIKUNCI 50% LEBAR TETAP & TIDAK TERTEKAN/TERDORONG) */}
+        <div className="w-1/2 flex-none h-full flex flex-col justify-center px-8 md:px-12 lg:px-16">
           {/* INDUK DIV: DIV CONTACT + DIV EMAIL/INSTA/LINKEDIN MENJADI 1 DIV */}
           <div className="w-full max-w-[560px] flex flex-col text-left">
             {/* DIV CONTACT (TINGGI AREA: 43PX) */}
