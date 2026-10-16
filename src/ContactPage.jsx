@@ -14,20 +14,20 @@ function ContactPage() {
       <nav className="fixed top-0 left-0 z-50 w-full px-5 pt-5 pb-[30px] flex items-start justify-between mix-blend-difference pointer-events-none">
         <Link
           to="/"
-          className="text-[16px] font-nats font-normal tracking-[0.15em] uppercase text-white hover:opacity-70 transition-opacity xl:w-[150px] xl:h-[16px] xl:leading-[16px] inline-flex items-center pointer-events-auto"
+          className="text-[16px] font-nats font-normal tracking-[0.15em] uppercase text-white xl:w-[150px] xl:h-[16px] xl:leading-[16px] inline-flex items-center pointer-events-auto"
         >
           DEA RAHMAWATI
         </Link>
 
         {/* Desktop Navigation (>= 800px) */}
         <div className="hidden min-[800px]:flex items-center gap-8 pointer-events-auto">
-          <Link to="/work" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/work" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             Work
           </Link>
-          <a href="/#about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             About
-          </a>
-          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          </Link>
+          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             Contact
           </Link>
         </div>
@@ -37,7 +37,7 @@ function ContactPage() {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-70 transition-opacity text-right bg-transparent border-none p-0 cursor-pointer"
+            className="text-[16px] font-medium tracking-[0.15em] uppercase text-white text-right bg-transparent border-none p-0 cursor-pointer"
           >
             Menu
           </button>
@@ -47,21 +47,21 @@ function ContactPage() {
               <Link
                 to="/work"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 Work
               </Link>
-              <a
-                href="/#about"
+              <Link
+                to="/about"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 About
-              </a>
+              </Link>
               <Link
                 to="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 Contact
               </Link>

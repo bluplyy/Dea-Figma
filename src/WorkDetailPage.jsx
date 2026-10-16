@@ -127,6 +127,7 @@ function WorkDetailPage() {
   const { id } = useParams()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLargeScreen, setIsLargeScreen] = useState(false)
+  const [activeImageIdx, setActiveImageIdx] = useState(0)
 
   // Find project by id or fallback to first
   const projectIndex = Math.max(0, parseInt(id, 10) - 1 || 0)
@@ -144,7 +145,31 @@ function WorkDetailPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    setActiveImageIdx(0)
   }, [id])
+
+  // Track scroll position on desktop to highlight active preview
+  useEffect(() => {
+    if (!isLargeScreen) return
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3
+      let currentIdx = 0
+
+      project.images.forEach((_, idx) => {
+        const el = document.getElementById(`project-image-${idx}`)
+        if (el && el.offsetTop <= scrollPosition) {
+          currentIdx = idx
+        }
+      })
+
+      setActiveImageIdx(currentIdx)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isLargeScreen, project.images])
 
   return (
     <div className="bg-[#FFFFFF] min-h-screen font-nats text-[#1A1A1A] relative">
@@ -152,20 +177,20 @@ function WorkDetailPage() {
       <nav className="fixed top-0 left-0 z-50 w-full px-5 pt-5 pb-[30px] flex items-start justify-between mix-blend-difference pointer-events-none">
         <Link
           to="/"
-          className="text-[16px] font-nats font-normal tracking-[0.15em] uppercase text-white hover:opacity-70 transition-opacity xl:w-[150px] xl:h-[16px] xl:leading-[16px] inline-flex items-center pointer-events-auto"
+          className="text-[16px] font-nats font-normal tracking-[0.15em] uppercase text-white xl:w-[150px] xl:h-[16px] xl:leading-[16px] inline-flex items-center pointer-events-auto"
         >
           DEA RAHMAWATI
         </Link>
 
         {/* Desktop Navigation (>= 800px) */}
         <div className="hidden min-[800px]:flex items-center gap-8 pointer-events-auto">
-          <Link to="/work" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/work" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             Work
           </Link>
-          <a href="/#about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             About
-          </a>
-          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          </Link>
+          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white">
             Contact
           </Link>
         </div>
@@ -175,7 +200,7 @@ function WorkDetailPage() {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-70 transition-opacity text-right bg-transparent border-none p-0 cursor-pointer"
+            className="text-[16px] font-medium tracking-[0.15em] uppercase text-white text-right bg-transparent border-none p-0 cursor-pointer"
           >
             Menu
           </button>
@@ -185,21 +210,21 @@ function WorkDetailPage() {
               <Link
                 to="/work"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 Work
               </Link>
-              <a
-                href="/#about"
+              <Link
+                to="/about"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 About
-              </a>
+              </Link>
               <Link
                 to="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
+                className="text-[16px] font-medium tracking-[0.15em] uppercase text-white"
               >
                 Contact
               </Link>
@@ -249,12 +274,16 @@ function WorkDetailPage() {
         </div>
       </div>
 
-      {/* ===== TAMPILAN DESKTOP (>= 800PX): SPLIT LAYOUT DENGAN SISI KANAN STICKY ===== */}
+      {/* ===== TAMPILAN DESKTOP (>= 800PX): SPLIT LAYOUT DENGAN SISI KANAN STICKY & PREVIEW 42PX ===== */}
       <div className="hidden min-[800px]:block w-full relative">
         {/* SISI KIRI: GAMBAR-GAMBAR BISA DI-SCROLL KE BAWAH (+20% LEBAR: 70%) */}
         <div className="w-[70%] flex flex-col pt-0">
           {project.images.map((imgSrc, idx) => (
-            <div key={idx} className="w-full flex-shrink-0">
+            <div
+              key={idx}
+              id={`project-image-${idx}`}
+              className="w-full flex-shrink-0"
+            >
               <img
                 src={imgSrc}
                 alt={`${project.subtitle} - ${idx + 1}`}
@@ -262,6 +291,41 @@ function WorkDetailPage() {
                 loading={idx === 0 ? 'eager' : 'lazy'}
               />
             </div>
+          ))}
+        </div>
+
+        {/* PREVIEW STRIP: FIXED VERTIKAL, LEBAR 42PX DI DALAM TEPI KANAN FOTO (left: calc(70% - 42px)), DI TENGAH LAYAR */}
+        <div
+          className="fixed top-1/2 -translate-y-1/2 z-30 flex flex-col select-none"
+          style={{
+            left: 'calc(70% - 42px)',
+            width: '42px',
+          }}
+        >
+          {project.images.map((imgSrc, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => {
+                const target = document.getElementById(`project-image-${idx}`)
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth' })
+                }
+              }}
+              className="w-[42px] p-0 border-none bg-transparent cursor-pointer block overflow-hidden transition-opacity duration-200"
+              style={{
+                width: '42px',
+                aspectRatio: '537 / 666',
+                opacity: activeImageIdx === idx ? 1 : 0.45,
+              }}
+              title={`View photo ${idx + 1}`}
+            >
+              <img
+                src={imgSrc}
+                alt={`Preview ${idx + 1}`}
+                className="w-full h-full object-cover block pointer-events-none select-none"
+              />
+            </button>
           ))}
         </div>
 

@@ -6,6 +6,7 @@ import App from './App.jsx'
 import WorkPage from './WorkPage.jsx'
 import WorkDetailPage from './WorkDetailPage.jsx'
 import ContactPage from './ContactPage.jsx'
+import AboutPage from './AboutPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/work" element={<WorkPage />} />
         <Route path="/work/:id" element={<WorkDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
