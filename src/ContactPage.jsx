@@ -137,8 +137,8 @@ function ContactPage() {
 
       {/* ===== TAMPILAN DESKTOP (>= 800PX): TEKS LEBAR TETAP & FOTO MENGISI SISA RUANG (FOTO TERPOTONG SAAT DIPERSEMPIT) ===== */}
       <div className="hidden min-[800px]:flex w-full h-full overflow-hidden flex-row">
-        {/* SISI KIRI: TEKS INFORMASI CONTACT (LEBAR TETAP DIPERTAHANKAN, TIDAK MENGECIL/MENYUSUT) */}
-        <div className="flex-none w-[520px] max-w-[60vw] h-full flex flex-col justify-center px-10 md:px-14 lg:px-16">
+        {/* SISI KIRI: TEKS INFORMASI CONTACT (LEBAR 720PX) */}
+        <div className="flex-none w-[720px] max-w-full h-full flex flex-col justify-center px-10 md:px-14 lg:px-16">
           {/* INDUK DIV: DIV CONTACT + DIV EMAIL/INSTA/LINKEDIN MENJADI 1 DIV */}
           <div className="w-full flex flex-col text-left">
             {/* DIV CONTACT (TINGGI AREA: 43PX) */}
