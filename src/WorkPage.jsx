@@ -156,9 +156,9 @@ function WorkPage() {
           <a href="/#about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
             About
           </a>
-          <a href="/#contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
             Contact
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Navigation (< 800px) */}
@@ -187,13 +187,13 @@ function WorkPage() {
               >
                 About
               </a>
-              <a
-                href="/#contact"
+              <Link
+                to="/contact"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
               >
                 Contact
-              </a>
+              </Link>
             </div>
           )}
         </div>
@@ -224,9 +224,8 @@ function WorkPage() {
                 }
           }
         >
-          {workItems.map((item, i) => (
-            <div key={i} className={isMobile ? 'w-full flex flex-col items-start' : 'flex-shrink-0 flex flex-col items-start'}>
-              {/* Photo container with custom cursor hover */}
+          {workItems.map((item, i) => {
+            const cardContent = (
               <div
                 className="work-card relative overflow-hidden"
                 onMouseMove={(e) => handleMouseMove(e, i)}
@@ -252,12 +251,29 @@ function WorkPage() {
                   </div>
                 )}
               </div>
-              {/* Name below photo */}
-              <span className="work-card-name">
-                {item.name}
-              </span>
-            </div>
-          ))}
+            )
+
+            return (
+              <div key={i} className={isMobile ? 'w-full flex flex-col items-start' : 'flex-shrink-0 flex flex-col items-start'}>
+                {/* Clickable link to /work/:id */}
+                <Link
+                  to={`/work/${i + 1}`}
+                  className="block w-full cursor-pointer outline-none select-none"
+                  onClick={(e) => {
+                    if (isSwipingState) {
+                      e.preventDefault()
+                    }
+                  }}
+                >
+                  {cardContent}
+                </Link>
+                {/* Name below photo */}
+                <span className="work-card-name">
+                  {item.name}
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

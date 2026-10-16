@@ -51,9 +51,9 @@ function App() {
           <a href="#about" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
             About
           </a>
-          <a href="#contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
+          <Link to="/contact" className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity">
             Contact
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Navigation (< 800px): 'MENU' di rata kanan, diklik muncul 3 baris rata kanan */}
@@ -82,13 +82,13 @@ function App() {
               >
                 About
               </a>
-              <a
-                href="#contact"
+              <Link
+                to="/contact"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-[16px] font-medium tracking-[0.15em] uppercase text-white hover:opacity-60 transition-opacity"
               >
                 Contact
-              </a>
+              </Link>
             </div>
           )}
         </div>
