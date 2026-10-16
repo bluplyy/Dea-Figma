@@ -18,72 +18,101 @@ const workItems = [
 function WorkPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const carouselWrapperRef = useRef(null)
   const carouselTrackRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [hoveredCard, setHoveredCard] = useState(null)
 
-  /* Check if desktop (>=1280px) */
+  /* Check viewport width */
   useEffect(() => {
-    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1280)
-    checkDesktop()
-    window.addEventListener('resize', checkDesktop)
-    return () => window.removeEventListener('resize', checkDesktop)
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1280)
+      setIsMobile(window.innerWidth < 800)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const [scrollX, setScrollX] = useState(0)
+  const scrollXRef = useRef(0)
+  const [isSwipingState, setIsSwipingState] = useState(false)
 
-  /* Horizontal scrolling via mouse wheel and touch without any page vertical scroll */
+  /* Horizontal scrolling via mouse wheel and touch (only for >= 800px) */
   useEffect(() => {
+    if (isMobile) return
     const wrapper = carouselWrapperRef.current
     const track = carouselTrackRef.current
     if (!wrapper || !track) return
 
+    // Wheel scroll (desktop / trackpad)
     const handleWheel = (e) => {
-      // Prevent browser default vertical scroll
       e.preventDefault()
-
       const maxScroll = track.scrollWidth - wrapper.clientWidth
       if (maxScroll <= 0) return
 
-      // Use deltaY (mouse wheel vertical) or deltaX (trackpad horizontal)
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
-
-      setScrollX((prev) => {
-        const next = prev + delta
-        return Math.max(0, Math.min(next, maxScroll))
-      })
+      const next = Math.max(0, Math.min(scrollXRef.current + delta, maxScroll))
+      scrollXRef.current = next
+      setScrollX(next)
     }
 
+    // Touch events for mobile/tablet swipe gesture
     let touchStartX = 0
     let touchStartY = 0
-    let initialScrollX = 0
+    let startScrollX = 0
+    let isSwiping = false
 
     const handleTouchStart = (e) => {
       touchStartX = e.touches[0].clientX
       touchStartY = e.touches[0].clientY
-      initialScrollX = scrollX
+      startScrollX = scrollXRef.current
+      isSwiping = false
     }
 
     const handleTouchMove = (e) => {
-      e.preventDefault()
-      const deltaX = touchStartX - e.touches[0].clientX
-      const maxScroll = track.scrollWidth - wrapper.clientWidth
-      if (maxScroll <= 0) return
-      const next = initialScrollX + deltaX
-      setScrollX(Math.max(0, Math.min(next, maxScroll)))
+      const currentX = e.touches[0].clientX
+      const currentY = e.touches[0].clientY
+      const diffX = touchStartX - currentX
+      const diffY = touchStartY - currentY
+
+      if (!isSwiping) {
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 6) {
+          isSwiping = true
+          setIsSwipingState(true)
+        }
+      }
+
+      if (isSwiping) {
+        if (e.cancelable) e.preventDefault()
+        const maxScroll = track.scrollWidth - wrapper.clientWidth
+        if (maxScroll <= 0) return
+        const next = Math.max(0, Math.min(startScrollX + diffX, maxScroll))
+        scrollXRef.current = next
+        setScrollX(next)
+      }
+    }
+
+    const handleTouchEnd = () => {
+      isSwiping = false
+      setIsSwipingState(false)
     }
 
     wrapper.addEventListener('wheel', handleWheel, { passive: false })
     wrapper.addEventListener('touchstart', handleTouchStart, { passive: true })
     wrapper.addEventListener('touchmove', handleTouchMove, { passive: false })
+    wrapper.addEventListener('touchend', handleTouchEnd, { passive: true })
+    wrapper.addEventListener('touchcancel', handleTouchEnd, { passive: true })
 
     return () => {
       wrapper.removeEventListener('wheel', handleWheel)
       wrapper.removeEventListener('touchstart', handleTouchStart)
       wrapper.removeEventListener('touchmove', handleTouchMove)
+      wrapper.removeEventListener('touchend', handleTouchEnd)
+      wrapper.removeEventListener('touchcancel', handleTouchEnd)
     }
-  }, [scrollX])
+  }, [isMobile])
 
   /* Track mouse position relative to the card for the custom cursor */
   const handleMouseMove = (e, index) => {
@@ -106,7 +135,9 @@ function WorkPage() {
   }, [])
 
   return (
-    <div className="bg-[#FFFFFF] h-screen h-[100dvh] w-full overflow-hidden font-sans text-[#1A1A1A] relative flex flex-col justify-center">
+    <div className={`bg-[#FFFFFF] w-full font-sans text-[#1A1A1A] relative flex flex-col justify-center ${
+      isMobile ? 'min-h-screen overflow-y-auto' : 'h-screen h-[100dvh] overflow-hidden'
+    }`}>
 
       {/* ===== NAVBAR (FIXED TOP + BLEND MODE: DIFFERENCE) ===== */}
       <nav className="fixed top-0 left-0 z-50 w-full px-5 pt-5 pb-[30px] flex items-start justify-between mix-blend-difference pointer-events-none">
@@ -168,21 +199,33 @@ function WorkPage() {
         </div>
       </nav>
 
-      {/* ===== WORK CAROUSEL (FIT 100VH - HORIZONTAL ONLY) ===== */}
+      {/* ===== WORK CONTENT (VERTICAL ON <800px, HORIZONTAL CAROUSEL ON >=800px) ===== */}
       <div
         ref={carouselWrapperRef}
-        className="relative w-full h-full flex items-center overflow-hidden pt-[70px] pb-[30px]"
+        className={`relative w-full ${
+          isMobile
+            ? 'pt-[90px] pb-[60px] px-5 flex justify-center'
+            : 'h-full flex items-center overflow-hidden pt-[70px] pb-[30px] touch-pan-x select-none'
+        }`}
       >
         <div
           ref={carouselTrackRef}
-          className="flex items-start gap-[24px] pl-[20px] pr-[20px] will-change-transform"
-          style={{
-            transform: `translateX(-${scrollX}px)`,
-            transition: 'transform 0.1s ease-out'
-          }}
+          className={
+            isMobile
+              ? 'flex flex-col items-center gap-[48px] w-full max-w-[500px]'
+              : 'flex items-start gap-[24px] pl-[20px] pr-[20px] will-change-transform'
+          }
+          style={
+            isMobile
+              ? {}
+              : {
+                  transform: `translateX(-${scrollX}px)`,
+                  transition: isSwipingState ? 'none' : 'transform 0.15s cubic-bezier(0.25, 1, 0.5, 1)'
+                }
+          }
         >
           {workItems.map((item, i) => (
-            <div key={i} className="flex-shrink-0 flex flex-col items-start">
+            <div key={i} className={isMobile ? 'w-full flex flex-col items-start' : 'flex-shrink-0 flex flex-col items-start'}>
               {/* Photo container with custom cursor hover */}
               <div
                 className="work-card relative overflow-hidden"
@@ -196,8 +239,8 @@ function WorkPage() {
                   loading="lazy"
                   draggable={false}
                 />
-                {/* Custom "look" cursor overlay — follows mouse */}
-                {hoveredCard === i && (
+                {/* Custom "look" cursor overlay — follows mouse (Desktop >= 1280px only) */}
+                {isDesktop && hoveredCard === i && (
                   <div
                     className="work-card-cursor"
                     style={{

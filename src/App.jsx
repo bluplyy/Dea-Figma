@@ -162,8 +162,8 @@ function App() {
                 loading="lazy"
               />
 
-              {/* Figma Hover Overlay: Solid Taupe/Olive background with centered 'ENTER' text */}
-              <div className="absolute inset-0 bg-[#6F6E63] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out select-none">
+              {/* Figma Hover Overlay: Solid Taupe/Olive background with centered 'ENTER' text (Desktop >= 1280px only) */}
+              <div className="absolute inset-0 bg-[#6F6E63] hidden xl:flex items-center justify-center opacity-0 xl:group-hover:opacity-100 transition-opacity duration-200 ease-in-out select-none pointer-events-none">
                 <span className="text-white text-[15px] font-normal tracking-[0.08em] uppercase font-nats">
                   ENTER
                 </span>
@@ -187,17 +187,17 @@ function App() {
             {/* Links: Email / Insta / LinkedIn */}
             <div className="w-full grid grid-cols-3 text-[16px] font-medium tracking-[0.15em] uppercase">
               <div className="text-left">
-                <a href="mailto:contact@dearahmawati.com" className="hover:opacity-70 transition-opacity">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dearahmawati900@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                   EMAIL
                 </a>
               </div>
               <div className="text-center">
-                <a href="#instagram" className="hover:opacity-70 transition-opacity">
+                <a href="https://www.instagram.com/dearrhm/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                   INSTA
                 </a>
               </div>
               <div className="text-right">
-                <a href="#linkedin" className="hover:opacity-70 transition-opacity">
+                <a href="https://www.linkedin.com/in/dea-rahmawati-445846264/?isSelfProfile=false" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                   LINKEDIN
                 </a>
               </div>

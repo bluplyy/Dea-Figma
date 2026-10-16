@@ -1,8 +1,7 @@
 /* ===== WORK PAGE STYLES ===== */
 
-/* Card wrapper — hide default cursor on hover */
+/* Card wrapper */
 .work-card {
-  cursor: none;
   position: relative;
   /* Proportional height based on viewport height, leaving space for navbar & label */
   height: min(666px, calc(100dvh - 160px));
@@ -10,22 +9,45 @@
   max-width: 90vw;
 }
 
-/* Custom "LOOK" cursor badge — follows the mouse position */
-.work-card-cursor {
-  position: absolute;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 16px;
-  min-width: 77px;
-  height: 34px;
-  /* Inverted rectangle: white box with mix-blend-mode difference */
-  background-color: #ffffff;
-  mix-blend-mode: difference;
-  transition: none;
+@media screen and (max-width: 799px) {
+  .work-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 537 / 666;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-card {
+    cursor: none;
+  }
+}
+
+/* Custom "LOOK" cursor badge — follows the mouse position (Only on desktop >= 1280px) */
+@media screen and (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+  .work-card-cursor {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 16px;
+    min-width: 77px;
+    height: 34px;
+    /* Inverted rectangle: white box with mix-blend-mode difference */
+    background-color: #ffffff;
+    mix-blend-mode: difference;
+    transition: none;
+  }
+}
+
+@media screen and (max-width: 1279px), (hover: none), (pointer: coarse) {
+  .work-card-cursor {
+    display: none !important;
+  }
 }
 
 /* The "LOOK" text inside the cursor badge */
