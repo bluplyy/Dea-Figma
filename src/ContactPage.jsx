@@ -72,8 +72,8 @@ function ContactPage() {
 
       {/* ===== TAMPILAN MOBILE (< 800PX): TIDAK BISA DI-SCROLL, TEKS DI ATAS, FOTO DI BAWAH ===== */}
       <div className="min-[800px]:hidden w-full h-full flex flex-col pt-[100px] overflow-hidden">
-        {/* Teks di atas: padding 20px (kiri, kanan, bawah), font NATS, ukuran 16, rata kiri, letter-spacing -2%, line-height 200% */}
-        <div className="w-full px-[20px] pb-[20px] flex-shrink-0">
+        {/* Teks di atas: px 20px, pb 50px, font NATS, ukuran 16, rata kiri, letter-spacing -2%, line-height 200% */}
+        <div className="w-full px-[20px] pb-[50px] flex-shrink-0">
           {/* DIV CONTACT */}
           <div className="mb-2">
             <h1
