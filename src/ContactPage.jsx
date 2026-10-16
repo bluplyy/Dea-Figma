@@ -135,12 +135,12 @@ function ContactPage() {
         </div>
       </div>
 
-      {/* ===== TAMPILAN DESKTOP (>= 800PX): SPLIT 50% LEFT / 50% RIGHT (NO SCROLL) ===== */}
+      {/* ===== TAMPILAN DESKTOP (>= 800PX): TEKS LEBAR TETAP & FOTO MENGISI SISA RUANG (FOTO TERPOTONG SAAT DIPERSEMPIT) ===== */}
       <div className="hidden min-[800px]:flex w-full h-full overflow-hidden flex-row">
-        {/* SISI KIRI: TEKS INFORMASI CONTACT (DIKUNCI 50% LEBAR TETAP & TIDAK TERTEKAN/TERDORONG) */}
-        <div className="w-1/2 flex-none h-full flex flex-col justify-center px-8 md:px-12 lg:px-16">
+        {/* SISI KIRI: TEKS INFORMASI CONTACT (LEBAR TETAP DIPERTAHANKAN, TIDAK MENGECIL/MENYUSUT) */}
+        <div className="flex-none w-[520px] max-w-[60vw] h-full flex flex-col justify-center px-10 md:px-14 lg:px-16">
           {/* INDUK DIV: DIV CONTACT + DIV EMAIL/INSTA/LINKEDIN MENJADI 1 DIV */}
-          <div className="w-full max-w-[560px] flex flex-col text-left">
+          <div className="w-full flex flex-col text-left">
             {/* DIV CONTACT (TINGGI AREA: 43PX) */}
             <div
               className="h-[43px] flex items-center"
@@ -160,7 +160,7 @@ function ContactPage() {
 
             {/* DIV EMAIL, INSTAGRAM, LINKEDIN (1 DIV, FONT NATS, UKURAN 24, RATA KIRI, LINE HEIGHT 130%, LETTER SPACING -2%) */}
             <div
-              className="flex flex-col text-left font-nats font-normal uppercase text-[#1A1A1A] mt-4"
+              className="flex flex-col text-left font-nats font-normal uppercase text-[#1A1A1A] mt-4 whitespace-nowrap"
               style={{
                 fontSize: '24px',
                 lineHeight: '130%',
@@ -195,12 +195,12 @@ function ContactPage() {
           </div>
         </div>
 
-        {/* SISI KANAN: FOTO DARI ASET CONTACT */}
-        <div className="w-1/2 h-full overflow-hidden">
+        {/* SISI KANAN: FOTO FLEKSIBEL (FLEX-1) - AKAN TERPOTONG KETIKA LAYAR DIPERSEMPIT */}
+        <div className="flex-1 min-w-0 h-full overflow-hidden">
           <img
             src="/contact-bg.jfif"
             alt="Contact Visual Asset"
-            className="w-full h-full object-cover object-center select-none block"
+            className="w-full h-full object-cover object-left select-none block"
             loading="eager"
           />
         </div>
